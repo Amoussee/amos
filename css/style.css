@@ -378,9 +378,8 @@ button:focus {
   position: relative;
   z-index: 1;
   min-height: 350px;
-  background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-  background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-  background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+  background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); /*for firefox*/
+  background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); /*for chrome*/
   margin-bottom: 120px; }
   .banner_area .box_1620 {
     background: #fff;
@@ -397,7 +396,7 @@ button:focus {
     z-index: 1; }
     .banner_area .banner_inner .banner_content h2 {
       color: #222222;
-      font-size: 48px;
+      font-size: 64px;
       font-family: "Heebo", sans-serif;
       margin-bottom: 0px;
       font-weight: bold; }
@@ -2715,18 +2714,25 @@ h6 {
   font-weight: 500;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 45px;
   color: #222222; }
 .personal_text h3 {
   font-size: 48px;
   text-transform: uppercase;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: #222222; }
 .personal_text p {
   font-family: "Roboto", sans-serif;
   max-width: 540px;
-  color: #777777;
-  margin-bottom: 40px; }
+  color: #000000;
+  margin-bottom: 5px; }
+.personal_text h5 {
+  font-family: "Roboto", sans-serif;
+  font-size:20px;
+  max-width: 540px;
+  color: #262424;
+  text-transform: uppercase;
+  margin-bottom: 10px; }
 .personal_text .basic_info li {
   margin-bottom: 15px; }
   .personal_text .basic_info li a {
