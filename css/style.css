@@ -301,8 +301,8 @@ button:focus {
 .home_banner_area {
   position: relative;
   z-index: 1;
-  background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-  background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+  background-image: -moz-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
+  background-image: -webkit-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
   background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
   margin-bottom: 200px; }
   .home_banner_area .box_1620 {
@@ -397,8 +397,9 @@ button:focus {
   position: relative;
   z-index: 1;
   min-height: 350px;
-  background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); /*for firefox*/
-  background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); /*for chrome*/
+  background-image: -moz-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
+  background-image: -webkit-linear-gradient(0deg, #a9caff 0%, #ffefcc 50%, #fea9a9 100%);
+  background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
   margin-bottom: 120px; }
   .banner_area .box_1620 {
     background: #fff;
@@ -550,8 +551,7 @@ button:focus {
       width: 100%;
       height: 1px; }
   .categories_post:hover .categories_details {
-    background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-    background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+    background-image: -webkit-linear-gradient(0deg, #a9caff 0%, #ffefcc 50%, #fea9a9 100%);
     background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
     opacity: 0.851; }
 
@@ -766,8 +766,7 @@ button:focus {
       color: #222222;
       font-size: 12px; }
       .blog_right_sidebar .tag_cloud_widget ul li a:hover {
-        background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-        background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+        background-image: -webkit-linear-gradient(0deg, #a9caff 0%, #ffefcc 50%, #fea9a9 100%);
         background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
         color: #fff; }
   .blog_right_sidebar .br {
@@ -2464,7 +2463,7 @@ h6 {
   transition: all 300ms linear 0s; }
   .white_bg_btn:hover {
     background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-    background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+    background-image: -webkit-linear-gradient(0deg, #88f3ff 0%, #88f3ff 100%);
     background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
     color: #fff;
     border: none; }
@@ -2500,6 +2499,8 @@ h6 {
     margin-top: -30px; }
 
 .welcome_text h4 {
+  margin-top:30px;
+  padding-left:90px;
   color: #222222;
   font-family: "Heebo", sans-serif;
   font-size: 36px;
@@ -2507,8 +2508,17 @@ h6 {
   text-transform: uppercase; }
 .welcome_text p {
   max-width: 495px;
+  padding-left:90px;
   font-family: "Roboto", sans-serif;
   margin-bottom: 40px; }
+
+.personal_text {
+  padding-left:90px;
+}
+
+.welcome_text .personal_text{
+  padding-left:90px;
+}
 
 .wel_item {
   border: 1px solid #eeeeee;
@@ -2703,7 +2713,8 @@ h6 {
     border-color: #fff;
     background: #fff; }
     .feature_item:hover i:before {
-      background: linear-gradient(to right, #8490ff 0%, #62bdfc 70%);
+      background: linear-gradient(to right, #a9caff 0%, #ffefcc 70%,#fea9a9 100%);
+      
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; }
 
@@ -2785,8 +2796,7 @@ h6 {
       color: #fff;
       font-size: 16px; }
     .personal_text .personal_social li:hover a {
-      background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-      background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+      background-image: -webkit-linear-gradient(0deg, #a9caff 0%, #fea9a9 100%);
       background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); }
 
 /* End Personal Profile Area css

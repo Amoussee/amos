@@ -19,20 +19,24 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/responsive.css">
 		<!-- carousel script -->
-		<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-		<script src="vendors/owl-carousel/owl.carousel.min.js"></script> -->
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-		<!-- <script>			
-		$(document).ready(function(){
-			$(".owl-carousel").owlCarousel({
-				items: 1, // Customize the number of items displayed
-				loop: true, // Enable looping
-				margin: 10, // Adjust the margin between items
-				autoplay: true, // Enable autoplay
-				autoplayTimeout: 3000, // Set autoplay timeout in milliseconds
-			});
-		});
-		</script> -->
+<!-- Include Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<script>			
+$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        items: 1, // Customize the number of items displayed
+        loop: true, // Enable looping
+        margin: 10, // Adjust the margin between items
+        autoplay: true, // Enable autoplay
+        autoplayTimeout: 3000, // Set autoplay timeout in milliseconds
+    });
+});
+</script>
+
     </head>
     <body>
         
@@ -97,84 +101,37 @@
 				<section class="welcome_area p_120">
 					<div class="container">
 						<div class="row welcome_inner">
-							<div class="col-lg-6">
+							<div class="col-lg-5 flex align-self-center">
+								
+								<!-- Update your carousel HTML -->
+								<img class="img-fluid" src="img/IMG_0072.jpg" alt="">
+							
+							</div>
+							<div class="col-lg-7">
 								<div class="welcome_text">
 									<h4>About Myself</h4>
 									<p>Hi, I'm Amos, currently pursuing a Bachelor's degree in Information Systems
 										with a focus on Digitalisation and Cloud Solutioning. <br><br>
 										I am genuinely fascinated by website design and UI/UX, I find joy in the process of creating visually
 										appealing and user-friendly digital experiences. Despite not having formal experience in the field yet, I am eager to pursue 
-										a career in this industry. <br><br>
+										a career in this industry.<br>
 										Outside of the tech world, you can find me biking, bouldering and even performing in SMU Samba Masala. 
 										Let's connect and explore the possibilities of transforming ideas into reality!</p>
-									<div class="row">
-										<div class="col-md-4">
-											<div class="wel_item">
-												<i class="lnr lnr-database"></i>
-												<h4>$2.5M</h4>
-												<p>Total Donation</p>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="wel_item">
-												<i class="lnr lnr-book"></i>
-												<h4>1465</h4>
-												<p>Total Projects</p>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="wel_item">
-												<i class="lnr lnr-users"></i>
-												<h4>3965</h4>
-												<p>Total Volunteers</p>
-											</div>
-										</div>
-									</div>
+
 								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="testi_inner">
-									<div class="testi_slider owl-carousel">
-										<div class="item">
-											<div class="testi_item">
-												<img src="img/IMG_0072.jpg">
-											</div>
-										</div>
-										<div class="item">
-											<div class="testi_item">
-												<p>As conscious traveling Paup ers we must always be oncerned about our dear Mother Earth. If you think about it, you travel across her face</p>
-												<h4>Fanny Spencer</h4>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star-half-o"></i></a>
-											</div>
-										</div>
-										<div class="item">
-											<div class="testi_item">
-												<p>As conscious traveling Paup ers we must always be oncerned about our dear Mother Earth. If you think about it, you travel across her face</p>
-												<h4>Fanny Spencer</h4>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star-half-o"></i></a>
-											</div>
-										</div>
-										<div class="item">
-											<div class="testi_item">
-												<p>As conscious traveling Paup ers we must always be oncerned about our dear Mother Earth. If you think about it, you travel across her face</p>
-												<h4>Fanny Spencer</h4>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star"></i></a>
-												<a href="#"><i class="fa fa-star-half-o"></i></a>
-											</div>
-										</div>
-									</div>
+
+								<div class="personal_text">
+
+									<ul class="list basic_info">
+										<li><a href="#"><i class="lnr lnr-envelope"></i> amos.chan.2022@smu.edu.sg</a></li>
+									</ul>
+									<ul class="list personal_social">
+										<li><a href="https://www.linkedin.com/in/amos-chan-yi-kang"><i class="fa fa-linkedin"></i></a></li>
+										<li><a href="https://github.com/Amoussee"><i class="fa fa-github"></i></a></li>
+									</ul>
+
 								</div>
+
 								<!-- <div class="tools_expert">
 									<div class="skill_main">
 										<div class="skill_item">
@@ -227,7 +184,7 @@
 				<!--================End Welcome Area =================-->
         
         
-        <!--================Home Banner Area =================-->
+        <!--================ Portfolio Area =================-->
         <section class="profile_area">
            	<div class="container">
            		<div class="profile_inner p_120">
@@ -255,10 +212,11 @@
 								</ul>
 
 								<ul class="list basic_info">
-									<li><a href="#"><i class="lnr lnr-envelope"></i> amos.chan.2022@smu.edu.sg</a></li>
+									<li><i class="lnr lnr-envelope"></i> amos.chan.2022@smu.edu.sg</li>
 								</ul>
 								<ul class="list personal_social">
 									<li><a href="https://www.linkedin.com/in/amos-chan-yi-kang"><i class="fa fa-linkedin"></i></a></li>
+									<li><a href="https://www.linkedin.com/in/amos-chan-yi-kang"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 							</div>
 						</div>
