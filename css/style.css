@@ -302,7 +302,7 @@ button:focus {
   position: relative;
   z-index: 1;
   background-image: -moz-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
-  background-image: -webkit-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
+  background-image: -webkit-linear-gradient(0deg, #063f66 0%,#063f66 33%, #063f66 66%, #063f66 100%);
   background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
   margin-bottom: 200px; }
   .home_banner_area .box_1620 {
@@ -398,7 +398,7 @@ button:focus {
   z-index: 1;
   min-height: 350px;
   background-image: -moz-linear-gradient(0deg, #fea9a9 0%, #ffefcc 50%, #c2d9ff 100%);
-  background-image: -webkit-linear-gradient(0deg, #a9caff 0%, #ffefcc 50%, #fea9a9 100%);
+  background-image: -webkit-linear-gradient(0deg, #063f66 0%,#063f66 33%, #063f66 66%, #063f66 100%);
   background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
   margin-bottom: 120px; }
   .banner_area .box_1620 {
@@ -2580,7 +2580,7 @@ h6 {
 ============================================================================================ */
 .mytabs_area {
   background-image: -moz-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
-  background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
+  background-image: -webkit-linear-gradient(0deg, #063f66 0%,#063f66 33%, #063f66 66%, #063f66 100%);
   background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%); }
 
 .tabs_inner .nav.nav-tabs {
