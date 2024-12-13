@@ -3039,3 +3039,8 @@ h6 {
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
