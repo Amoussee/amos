@@ -67,7 +67,11 @@ body {
   color: #777777; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Heebo", sans-serif;
+  font-family: "Red Hat Text", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  color: black;
+  font-style: normal;
   font-weight: bold; }
 
 button:focus {
@@ -3034,6 +3038,99 @@ h6 {
   .copy_right_text p a {
     color: #766dff; }
 
+
+
+    .rainbow-text {
+      font-size: 4rem; /* Adjust text size */
+      font-weight: bold;
+      font-family: "Red Hat Text", serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+      background-size: 400% 400%;
+      background-clip: text;
+      -webkit-background-clip: text; /* Ensures compatibility with WebKit browsers */
+      color: rgb(255, 255, 255);
+      animation: rainbow 3s infinite linear;
+    }
+
+    .custom-hbd {
+      border-radius: 15px;
+      background: linear-gradient(135deg, rgba(23, 21, 59), rgb(23, 21, 59)); /* Softer gradient */
+      padding: 30px;
+      border: none; /* Remove solid border */
+      /* box-shadow: 0 8px 20px rgba(163, 92, 122, 0.3); Soft shadow */
+      text-align: center;
+      max-width: 600px;
+  }
+
+  .custom-form-bg {
+    background: rgba(255, 255, 255, 0.9); /* Optional: Adds a soft background */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional: Adds depth */
+    max-width: 600px; /* Ensures it's not too wide */
+    width: 100%; /* Responsive width */
+    text-align: center; /* Center text inside */
+    z-index: 1; /* Puts it above background */
+}
+  
+
+  .btn-custom {
+    background: linear-gradient(90deg, rgb(46, 35, 108), rgb(46, 35, 108)); /* Gradient button */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px; /* More rounded for a premium look */
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(163, 92, 122, 0.3); /* Subtle shadow */
+}
+    
+    /* Hover Effect: Button Pulsing */
+  .btn-custom:hover {
+      transform: scale(1.05); /* Slight scaling effect */
+      /* box-shadow: 0 6px 16px rgba(163, 92, 122, 0.5); Stronger glow */
+      background: linear-gradient(90deg, rgb(67, 61, 139), rgb(67, 61, 139)); /* Reverse gradient */
+  }
+    
+  .btn-custom:active {
+    transform: scale(0.95); /* Slight shrink effect */
+}
+    /* Keyframes for Pulsing */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.1);
+      }
+    }
+
+    .byod-p{
+      font-family: "Red Hat Text", serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+      color: black;
+    }
+    
+  .bg-image {
+      background-color: pink;
+      width: 100vw; /* Full width */
+      height: 100vh; /* Full height */
+  }
+
+  .custom-questions {
+    
+    padding: 30px;
+    border: none; /* Remove solid border */
+    /* box-shadow: 0 8px 20px rgba(163, 92, 122, 0.3); Soft shadow */
+    text-align: center;
+    max-width: 600px;
+  }
 /* End Footer Area css
 ============================================================================================ */
 /*---------------------------------------------------- */

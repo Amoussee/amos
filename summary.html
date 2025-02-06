@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Date Summary</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        .card.selected {
+            border: 3px solid #007bff !important;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="container text-center">
+        <h2 class="mb-4">Your Date Summary</h2>
+        <p><strong>We are meeting at: </strong> <span id="summaryTime"></span></p>
+        <p><strong>Lunch Choice:</strong> <span id="summaryLunch"></span></p>
+        <p><strong>Activity Choice:</strong> <span id="summaryActivity"></span></p>
+        
+        <a href="ryanform.html" class="btn btn-secondary mt-3">Go Back</a>
+    </div>
+
+    <!-- JavaScript to display summary and highlight selected cards -->
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) || "Not selected";
+        }
+        
+        // Populate the summary with selected values
+        const timeChoice = getQueryParam("selectedTime");
+        const lunchChoice = getQueryParam("selectedLunch");
+        const activityChoice = getQueryParam("selectedActivity");
+
+        document.getElementById("summaryTime").textContent = timeChoice;
+        document.getElementById("summaryLunch").textContent = lunchChoice;
+        document.getElementById("summaryActivity").textContent = activityChoice;
+
+        // Highlight the selected choices
+        document.querySelectorAll(".card").forEach(card => {
+            if (card.dataset.category === "lunch" && card.dataset.value === lunchChoice) {
+                card.classList.add("selected");
+            }
+            if (card.dataset.category === "time" && card.dataset.value === timeChoice) {
+                card.classList.add("selected");
+            }
+            if (card.dataset.category === "activity" && card.dataset.value === activityChoice) {
+                card.classList.add("selected");
+            }
+        });
+
+        const summaryData = {
+            time: document.getElementById("summaryTime").textContent,
+            lunch: document.getElementById("summaryLunch").textContent,
+            activity: document.getElementById("summaryActivity").textContent
+        };
+
+    </script>
+</body>
+</html>
