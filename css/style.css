@@ -44,6 +44,12 @@ Table of Content:
 @import url("https://fonts.googleapis.com/css?family=Heebo:300,400,700,900|Roboto:300,400,500,700");
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 .list {
   list-style: none;
   margin: 0px;
@@ -3064,6 +3070,16 @@ h6 {
       max-width: 600px;
   }
 
+  .custom1-hbd {
+    border-radius: 15px;
+    background: white; /* Softer gradient */
+    padding: 30px;
+    border: none; /* Remove solid border */
+    /* box-shadow: 0 8px 20px rgba(163, 92, 122, 0.3); Soft shadow */
+    text-align: center;
+    max-width: 600px;
+}
+
   .custom-form-bg {
     background: rgba(255, 255, 255, 0.9); /* Optional: Adds a soft background */
     padding: 20px;
@@ -3098,6 +3114,30 @@ h6 {
     
   .btn-custom:active {
     transform: scale(0.95); /* Slight shrink effect */
+}
+
+.btn1-custom {
+  background:red; /* Gradient button */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px; /* More rounded for a premium look */
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(163, 92, 122, 0.3); /* Subtle shadow */
+}
+  
+  /* Hover Effect: Button Pulsing */
+.btn1-custom:hover {
+    transform: scale(1.05); /* Slight scaling effect */
+    /* box-shadow: 0 6px 16px rgba(163, 92, 122, 0.5); Stronger glow */
+    background: red; /* Reverse gradient */
+}
+  
+.btn1-custom:active {
+  transform: scale(0.95); /* Slight shrink effect */
 }
     /* Keyframes for Pulsing */
     @keyframes pulse {
