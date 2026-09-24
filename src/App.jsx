@@ -111,12 +111,6 @@ export default function App() {
               experience={data.experience}
             />
 
-            <TerminalWidget
-              personal={data.personal}
-              skills={data.skills}
-              projects={data.projects}
-            />
-
             <ContactSection
               personal={data.personal}
             />

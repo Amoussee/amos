@@ -312,16 +312,108 @@ async function generatePersonalizedCart(userPhoto, userHistorySKUs) {
           impact: "Delivered 3 core platform modules and drastically reduced administrative reporting overhead."
         }
       ],
-      architectureDiagram: `
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ Student Commute Input   │────>│ Interactive Carbon Sim   │────>│ Google Maps API Engine │
-└─────────────────────────┘     └──────────────────────────┘     └───────────┬────────────┘
-                                                                             │
-                                                                             ▼
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ NL Admin BI Visualizer  │<────│ Structured Data Pipeline │<────│ Structured Route Map   │
-└─────────────────────────┘     └──────────────────────────┘     └────────────────────────┘
-`,
+      architectureDiagram: `flowchart TD
+    %% Styling Classes
+    classDef client fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px,color:#14532d;
+    classDef edge fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a;
+    classDef publicVpc fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f;
+    classDef privateVpc fill:#fee2e2,stroke:#dc2626,stroke-width:1.5px,color:#7f1d1d;
+    classDef external fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef cicd fill:#f4f4f5,stroke:#71717a,stroke-width:1px,stroke-dasharray: 4 4,color:#27272a;
+
+    %% 1. Client & External Actors
+    subgraph Clients ["1. Client Interaction Layer"]
+        U_PUB["Public Users / Commuters"]
+        U_PAR["Parents / Students (PSG)"]
+        U_ADM["TCC Administrators"]
+        EXT_WEB["TCC Public Website (Google Sites)"]
+    end
+    class U_PUB,U_PAR,U_ADM,EXT_WEB client;
+
+    %% 2. Edge & Security
+    subgraph Edge_Security ["2. Edge & Authentication Layer"]
+        CF["Amazon CloudFront (CDN)"]
+        S3_FE["Amazon S3 Bucket (Static Next.js Build)"]
+        APIGW["Amazon API Gateway"]
+        COG["AWS Cognito (User Pools & JWT)"]
+        LAMBDA_AUTH["Authentication & User Lambdas"]
+    end
+    class CF,S3_FE,APIGW,COG,LAMBDA_AUTH edge;
+
+    %% 3. AWS VPC Network Boundary
+    subgraph VPC ["3. Virtual Private Cloud (VPC) Boundary"]
+        subgraph Public_Subnet ["Public Subnet"]
+            ALB["Application Load Balancer (ALB)"]
+        end
+
+        subgraph Private_Subnet ["Private Subnets (Isolated Backend & Storage)"]
+            LAMBDA_SSR["Server Function Lambda (SSR)"]
+            EC2_APP["Backend App Server (EC2 / Node.js Express)"]
+            
+            subgraph App_Internal ["Backend Pipeline Layers"]
+                MW["Auth Middleware & Request Validator"]
+                CTRL["Controllers (Surveys, Dashboards, Routes)"]
+                MODELS["Data Models & Connection Pool"]
+            end
+            
+            RDS_DB[("Amazon RDS PostgreSQL - JSONB & Relational")]
+        end
+    end
+    class ALB publicVpc;
+    class LAMBDA_SSR,EC2_APP,MW,CTRL,MODELS,RDS_DB privateVpc;
+
+    %% 4. External Services & AI Engines
+    subgraph External_APIs ["4. External Integrations & AI Engine"]
+        GMAPS["Google Maps & Places API"]
+        GEMINI["Gemini 3.1 Flash Lite (Analyst Model)"]
+        GEMMA["Gemma 3 1B (JSON Schema Formatter)"]
+    end
+    class GMAPS,GEMINI,GEMMA external;
+
+    %% 5. Automated CI/CD Layer
+    subgraph DevSecOps ["5. CI/CD Deployment Pipeline"]
+        DEV["Developers / GitHub"]
+        GHA["GitHub Actions (OIDC / AWS STS)"]
+        TESTS["Playwright E2E + Jest - 90% Branch Cov + Trivy"]
+    end
+    class DEV,GHA,TESTS cicd;
+
+    %% Client Traffic & Ingress Routing
+    EXT_WEB -->|Embeds via iFrame| CF
+    U_PUB -->|Access Public Simulator / Surveys| CF
+    U_PAR -->|Access Directed Surveys| CF
+    U_ADM -->|Access Admin Dashboard / Survey Builder| CF
+
+    CF -->|Static Assets Cache Hit| S3_FE
+    CF -->|Dynamic API / SSR Route| APIGW
+    
+    %% Auth Flows
+    APIGW -->|Auth Handshake| LAMBDA_AUTH
+    LAMBDA_AUTH <-->|Token Validation / Management| COG
+    LAMBDA_AUTH -.->|Read/Write User Accounts| RDS_DB
+
+    %% VPC Ingress Routing
+    APIGW -->|Forward Authenticated HTTP| ALB
+    ALB -->|Reverse Proxy / Least Privilege| EC2_APP
+    ALB -.->|SSR Invocations| LAMBDA_SSR
+
+    %% Inside Backend EC2 Pipeline
+    EC2_APP --> MW
+    MW --> CTRL
+    CTRL --> MODELS
+    MODELS <-->|SQL Queries / JSONB Operations| RDS_DB
+
+    %% External Service Interactivity
+    CTRL <-->|Commute Distance & Waypoints| GMAPS
+    CTRL <-->|Cramers V Matrix & 3 Plain Chart Suggestions| GEMINI
+    GEMINI -->|Plain Text Suggestions| GEMMA
+    GEMMA -->|Constrained JSON Pivot Config| CTRL
+
+    %% CI/CD Flows
+    DEV -->|Push Code / PR| GHA
+    GHA --> TESTS
+    TESTS -->|"AssumeRoleWithWebIdentity (Temporary STS Keys)"| S3_FE
+    TESTS -->|Deploy Code via Self-Hosted Runner| EC2_APP`,
       codeSnippet: `// Multi-Objective Route Optimization & Nudge Score
 export function calculateRouteRecommendation(distanceKm, durationMins, transportType) {
   const CO2_FACTOR = { bus: 0.089, train: 0.035, car: 0.192, walk: 0.0 };
