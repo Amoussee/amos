@@ -119,23 +119,34 @@ export default function RecruiterView({ personal, skills, experience, education,
             {/* Metric Callouts */}
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
               gap: '1rem',
               background: 'var(--bg-tertiary)',
               padding: '1.25rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--glass-border)'
             }}>
-              {personal.stats.map((s, idx) => (
-                <div key={idx} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-violet)' }}>
-                    {s.value}
+              {personal.stats.map((s, idx) => {
+                const valFontSize = s.value.length > 12 ? '1.15rem' : s.value.length > 8 ? '1.3rem' : '1.5rem';
+                return (
+                  <div key={idx} style={{ textAlign: 'center', minWidth: 0 }}>
+                    <div style={{ 
+                      fontSize: valFontSize, 
+                      fontWeight: 800, 
+                      color: 'var(--accent-violet)',
+                      lineHeight: 1.2,
+                      marginBottom: '0.2rem',
+                      overflowWrap: 'break-word',
+                      wordBreak: 'break-word'
+                    }}>
+                      {s.value}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.35, overflowWrap: 'break-word' }}>
+                      {s.label}
+                    </div>
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    {s.label}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

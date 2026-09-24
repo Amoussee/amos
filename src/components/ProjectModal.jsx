@@ -8,8 +8,9 @@ import {
   Code, 
   Layers, 
   Copy, 
-  Check 
+  Check
 } from 'lucide-react';
+import MermaidDiagram from './MermaidDiagram';
 
 export default function ProjectModal({ project, onClose }) {
   const [copiedCode, setCopiedCode] = useState(false);
@@ -22,6 +23,42 @@ export default function ProjectModal({ project, onClose }) {
       setCopiedCode(true);
       setTimeout(() => setCopiedCode(false), 2000);
     }
+  };
+
+  const renderInlineText = (text) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, idx) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={idx} style={{ color: 'var(--text-primary)', fontWeight: 700 }}>
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  };
+
+  const renderFormattedText = (text) => {
+    if (!text) return null;
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+    if (lines.length <= 1) {
+      return (
+        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
+          {renderInlineText(text)}
+        </p>
+      );
+    }
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        {lines.map((line, idx) => (
+          <p key={idx} style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
+            {renderInlineText(line)}
+          </p>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -86,111 +123,166 @@ export default function ProjectModal({ project, onClose }) {
         {/* Action Buttons */}
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           <a href={project.liveUrl} target="_blank" rel="noreferrer" className="btn btn-primary btn-sm">
-            <ExternalLink size={16} /> Live Application Demo
-          </a>
-          <a href={project.githubUrl} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">
-            <Github size={16} /> View Source Code
+            <ExternalLink size={16} /> View more 
           </a>
         </div>
 
-        {/* Problem & Solution Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-          <div style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-            <h4 style={{ color: 'var(--accent-amber)', fontSize: '0.95rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              ⚠️ The Engineering Problem
+        {/* Section 1: Problem */}
+        {project.problem && (
+          <div style={{ marginBottom: '1.5rem', background: 'var(--bg-tertiary)', padding: '1.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+            <h4 style={{ color: 'var(--accent-amber)', fontSize: '1.05rem', marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              ⚠️ Problem
             </h4>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-              {project.problem}
-            </p>
+            {renderFormattedText(project.problem)}
           </div>
+        )}
 
-          <div style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-            <h4 style={{ color: 'var(--accent-emerald)', fontSize: '0.95rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              💡 Technical Solution
+        {/* Section 2: My Solution */}
+        {(project.mySolution || project.solution) && (
+          <div style={{ marginBottom: '1.5rem', background: 'var(--bg-tertiary)', padding: '1.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+            <h4 style={{ color: 'var(--accent-emerald)', fontSize: '1.05rem', marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              💡 My Solution
             </h4>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-              {project.solution}
-            </p>
+            {renderFormattedText(project.mySolution || project.solution)}
           </div>
-        </div>
+        )}
 
-        {/* Key Architectural Decisions */}
-        {project.keyDecisions && (
+        {/* Section 3: Technical Implementations */}
+        {(project.technicalImplementation || project.technicalImplementations || project.architectureDiagram || project.mermaidDiagram || project.codeSnippet) && (
+          <div style={{ marginBottom: '2rem', background: 'var(--bg-tertiary)', padding: '1.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+            <h4 style={{ color: 'var(--accent-cyan)', fontSize: '1.05rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              ⚙️ Technical Implementations
+            </h4>
+
+            {/* Technical Pipeline / Specs Overview */}
+            {(project.technicalImplementation || project.technicalImplementations) && (
+              <div style={{ marginBottom: '1.5rem' }}>
+                {renderFormattedText(project.technicalImplementation || project.technicalImplementations)}
+              </div>
+            )}
+
+            {/* System Architecture Flow Diagram */}
+            {(project.architectureDiagram || project.mermaidDiagram) && (() => {
+              const diagramText = project.mermaidDiagram || project.architectureDiagram;
+              const isMermaid = diagramText && (
+                diagramText.includes('flowchart') || 
+                diagramText.includes('graph ') || 
+                diagramText.includes('sequenceDiagram') ||
+                diagramText.includes('subgraph')
+              );
+
+              return (
+                <div style={{ marginTop: '1.25rem', marginBottom: '1.25rem' }}>
+                  <h5 style={{ fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <Layers size={16} color="var(--accent-cyan)" /> System Architecture Flow
+                  </h5>
+
+                  {isMermaid ? (
+                    <MermaidDiagram chart={diagramText} id={`modal-mermaid-${project.id}`} />
+                  ) : (
+                    <div style={{
+                      background: '#04060a',
+                      border: '1px solid var(--glass-border)',
+                      borderRadius: 'var(--radius-sm)',
+                      padding: '1.25rem',
+                      overflowX: 'auto'
+                    }}>
+                      <pre style={{ 
+                        fontFamily: 'var(--font-mono)', 
+                        fontSize: '0.82rem', 
+                        color: 'var(--accent-cyan)',
+                        lineHeight: 1.45,
+                        margin: 0
+                      }}>
+                        {diagramText}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+        )}
+
+        {/* Section 4: Key Decisions Made Table */}
+        {project.keyDecisions && project.keyDecisions.length > 0 && (
           <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <CheckCircle2 size={18} color="var(--accent-violet)" /> Key Architectural Decisions
-            </h3>
-            <ul style={{ paddingLeft: '1.25rem', color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              {project.keyDecisions.map((dec, idx) => (
-                <li key={idx} style={{ marginBottom: '0.4rem' }}>
-                  {dec}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* System Architecture Flow Diagram */}
-        {project.architectureDiagram && (
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Layers size={18} color="var(--accent-cyan)" /> System Architecture Flow
-            </h3>
-            <div style={{
-              background: '#04060a',
-              border: '1px solid var(--glass-border)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '1.25rem',
-              overflowX: 'auto'
+            <h3 style={{ 
+              fontSize: '1.1rem', 
+              marginBottom: '0.85rem', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.5rem' 
             }}>
-              <pre style={{ 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '0.82rem', 
-                color: 'var(--accent-cyan)',
-                lineHeight: 1.45 
-              }}>
-                {project.architectureDiagram}
-              </pre>
-            </div>
-          </div>
-        )}
+              <CheckCircle2 size={18} color="var(--accent-violet)" /> Key Decisions Made
+            </h3>
 
-        {/* Code Snippet Preview */}
-        {project.codeSnippet && (
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-              <h3 style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Code size={18} color="var(--accent-amber)" /> Core Architecture Code
-              </h3>
-              <button 
-                onClick={handleCopyCode}
-                className="btn btn-secondary btn-sm"
-                style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem' }}
-              >
-                {copiedCode ? <Check size={14} color="var(--accent-emerald)" /> : <Copy size={14} />}
-                {copiedCode ? "Copied" : "Copy Code"}
-              </button>
-            </div>
-
-            <div style={{
-              background: '#090d16',
+            <div style={{ 
+              overflowX: 'auto', 
+              borderRadius: 'var(--radius-sm)', 
               border: '1px solid var(--glass-border)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '1.25rem',
-              overflowX: 'auto'
+              background: 'var(--bg-tertiary)' 
             }}>
-              <pre style={{ 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '0.82rem', 
-                color: '#e5e7eb',
-                lineHeight: 1.5 
+              <table style={{ 
+                width: '100%', 
+                borderCollapse: 'collapse', 
+                textAlign: 'left',
+                fontSize: '0.86rem'
               }}>
-                {project.codeSnippet}
-              </pre>
+                <thead>
+                  <tr style={{ 
+                    background: 'rgba(255, 255, 255, 0.04)', 
+                    borderBottom: '1px solid var(--glass-border)' 
+                  }}>
+                    <th style={{ padding: '0.85rem 1rem', color: 'var(--accent-cyan)', fontWeight: 600, minWidth: '170px' }}>
+                      Strategic Decision
+                    </th>
+                    <th style={{ padding: '0.85rem 1rem', color: 'var(--accent-amber)', fontWeight: 600, minWidth: '190px' }}>
+                      The Dilemma
+                    </th>
+                    <th style={{ padding: '0.85rem 1rem', color: 'var(--text-primary)', fontWeight: 600, minWidth: '230px' }}>
+                      Solution &amp; Technical Implementation
+                    </th>
+                    <th style={{ padding: '0.85rem 1rem', color: 'var(--accent-emerald)', fontWeight: 600, minWidth: '170px' }}>
+                      Impact
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {project.keyDecisions.map((dec, idx) => {
+                    const isObj = typeof dec === 'object' && dec !== null;
+                    const strategicDecision = isObj ? dec.strategicDecision : `Decision #${idx + 1}`;
+                    const dilemma = isObj ? dec.dilemma : '—';
+                    const solution = isObj ? dec.solution : (typeof dec === 'string' ? dec : '—');
+                    const impact = isObj ? dec.impact : '—';
+
+                    return (
+                      <tr 
+                        key={idx} 
+                        style={{ 
+                          borderBottom: idx === project.keyDecisions.length - 1 ? 'none' : '1px solid rgba(255, 255, 255, 0.05)'
+                        }}
+                      >
+                        <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--text-primary)', verticalAlign: 'top', lineHeight: 1.45 }}>
+                          {strategicDecision}
+                        </td>
+                        <td style={{ padding: '0.85rem 1rem', color: 'var(--text-secondary)', lineHeight: 1.5, verticalAlign: 'top' }}>
+                          {dilemma}
+                        </td>
+                        <td style={{ padding: '0.85rem 1rem', color: 'var(--text-secondary)', lineHeight: 1.5, verticalAlign: 'top' }}>
+                          {solution}
+                        </td>
+                        <td style={{ padding: '0.85rem 1rem', color: 'var(--accent-emerald)', fontWeight: 500, lineHeight: 1.45, verticalAlign: 'top' }}>
+                          {impact}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

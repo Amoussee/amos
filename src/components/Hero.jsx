@@ -91,26 +91,51 @@ export default function Hero({ personal, setViewMode }) {
           {/* Quick Stats Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
             gap: '1.25rem',
             marginTop: '2rem'
           }}>
-            {personal.stats.map((stat, idx) => (
-              <div key={idx} className="glass-card" style={{ padding: '1.25rem 1.5rem' }}>
-                <div style={{ 
-                  fontSize: '2rem', 
-                  fontWeight: 800, 
-                  fontFamily: 'var(--font-display)',
-                  color: 'var(--text-primary)',
-                  marginBottom: '0.2rem'
-                }} className="text-gradient">
-                  {stat.value}
+            {personal.stats.map((stat, idx) => {
+              const valFontSize = stat.value.length > 12 ? '1.25rem' : stat.value.length > 8 ? '1.55rem' : '1.85rem';
+              return (
+                <div 
+                  key={idx} 
+                  className="glass-card" 
+                  style={{ 
+                    padding: '1.25rem 1.1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    minWidth: 0
+                  }}
+                >
+                  <div 
+                    style={{ 
+                      fontSize: valFontSize, 
+                      fontWeight: 800, 
+                      fontFamily: 'var(--font-display)',
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.35rem',
+                      lineHeight: 1.2,
+                      overflowWrap: 'break-word',
+                      wordBreak: 'break-word'
+                    }} 
+                    className="text-gradient"
+                  >
+                    {stat.value}
+                  </div>
+                  <div style={{ 
+                    fontSize: '0.85rem', 
+                    color: 'var(--text-secondary)', 
+                    fontWeight: 500,
+                    lineHeight: 1.35,
+                    overflowWrap: 'break-word'
+                  }}>
+                    {stat.label}
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>

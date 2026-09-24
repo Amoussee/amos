@@ -14,9 +14,9 @@ export const initialPortfolioData = {
     resumeUrl: "#",
     stats: [
       { label: "Product Value Impact", value: "€17.4M" },
-      { label: "Hackathon Award", value: "Google Winner" },
-      { label: "Data Loss Reduction", value: "~5%" },
-      { label: "LLM Workflow Valued", value: "€885K" }
+      { label: "Sephora Asia Tech Hackathon", value: "Cloud Innovation" },
+      { label: "LLM Workflow Valued", value: "€885K" },
+      { label: "Google UIUX Design Certified", value: "Google" }
     ]
   },
   skills: [
@@ -69,25 +69,138 @@ export const initialPortfolioData = {
       featured: true,
       metrics: "🏆 Google Innovation Award | Sephora x Google 2026",
       shortDescription: "AI-powered visual search product solving decision paralysis for Gen Z beauty shoppers by converting trend photos into instantly matchable product carts.",
-      problem: "Gen Z beauty shoppers experience severe choice paralysis when trying to replicate social media makeup trends on e-commerce platforms, struggling to match shades and catalog SKUs.",
-      solution: "Formulated the end-to-end product vision for Snap2Cart: an AI visual commerce engine using computer vision skin-tone detection, multimodal LLM metadata extraction, and vector similarity search mapped directly to Sephora's internal SKU catalog.",
+      problem: `**• Hackathon's requirement:** Harness Agentic AI to either eliminate retail frictions, streamline operational processes, and boost e-commerce conversion for Sephora.
+
+**• Our Problem Statement:** Gen Z beauty shoppers experience severe choice paralysis when trying to replicate social media makeup trends on e-commerce platforms, struggling to match shades and catalog SKUs.`,
+      mySolution: `Snap2Cart is made up of a pipeline of agents, each tasked with their own job. Overall, the agents work together to enable shoppers to upload visual media (screenshots, videos) or descriptive prompts to capture a target aesthetic. By analysing the image/video/text and automatically identify the products that makeup that look, personalized beauty routine will be generated with an in-depth description of why each product is needed to achieve that specific look.
+
+      Snap2Cart grounds recommendations in real-time social beauty trends while shifting the shopping experience from single-item searches to end-to-end routine curation. By packaging complete, layered looks rather than standalone products, it delivers a seamless user experience while driving higher average order value (AOV) and larger basket sizes.`,
+      technicalImplementation: `**• Decoupled Asynchronous Scraping (Background Layer):** A scheduled cron job scrapes social feeds (TikTok, Instagram, Xiaohongshu) to populate an offline Trend Knowledge Base, keeping recommendation models updated with real-time aesthetic trends. 
+
+**• Multimodal Intake & Normalization (Ingestion Layer):** The Processing Agent ingests unstructured multimodal input (uploaded look screenshot, video URL, or descriptive text query) and extracts normalized intent and aesthetic tokens.
+
+**• Context & Profile Augmentation (Parallel Enrichment):** The User Profile History Processor fetches Beauty Insider historical transactions, active shade matches, and skin profile data (undertone, skin type, concerns).
+
+**• Deterministic Multi-Signal Synthesis (Discussion Room Orchestrator):** The central orchestrator synthesizes user input with Trend Knowledge Base and Profile constraints, generating an aesthetic routine structure (Base → Complexion → Colour → Finish) while suppressing repurchases of owned SKUs.
+
+**• Catalog Grounding & Stock Resolution (Product Matcher):** Translates abstract query tokens into exact catalog SKUs using vector similarity search, validates real-time local stock availability, and formats a single checkout-ready bundle with a "Buy Routine" CTA.
+
+**• Loop Closure & Quality Gate (Critic Agent):** Employs an LLM vision judge to compare the final recommended bundle against the initial source image, scoring look replication fidelity (0–100) before client presentation.`,
       keyDecisions: [
-        "Formulated the product pitch and Gen Z target user personas to win 1st Place Google Innovation Award.",
-        "Architected weekly automated cronjob pipeline to scrape trending social media looks and generate semantic metadata via LLMs.",
-        "Engineered matchmaking engine with vector embeddings to map user photos against internal SKU catalog.",
-        "Integrated skin-tone detection algorithm to automatically calibrate shade recommendations.",
-        "Incorporated purchase history checks to suppress duplicate SKUs and recommend complementary items."
+        {
+          strategicDecision: "Weekly Cron Ingestion",
+          dilemma: "Real-time scraping would drain compute budget and risk rate limits. Have to ensure that the LLM is always updated with the latest makeup trend as well",
+          solution: "Automated weekly batch pipeline pairing web scrapers with mulitmodal LLMs to tag semantic metadata.",
+          impact: "Keeps trend discovery fresh while managing computational expenses"
+        },
+        {
+          strategicDecision: "Vector Matchmaking Engine",
+          dilemma: "Open-ended generative AI hallucinates non-existent products or out-of-stocks items.",
+          solution: "Embedded aesthetic descriptiors into a vector database to run semantic similarity checks strictly aganist Sephora's internal SKU catalog ",
+          impact: "Guarantee that the recommendations are not hallucinated"
+        },
+        {
+          strategicDecision: "Skin-Tone Calibration",
+          dilemma: "Trends look different cross different complexions and skin tones. Mismatched undertones will lead to looks that differs from the trend",
+          solution: "Integrated exisiting skin-tone algorithms into the shade-filtering pipeline",
+          impact: "Personalised product suggestions to true user undertones, boosting checkout confidence"
+        },
+           {
+          strategicDecision: "Order History Logic",
+          dilemma: "Recommending products that a user already owns might frustrate shoppers and limit basket expansion",
+          solution: "Cross reference with user's purchase history, suppress any repurchases and suggest alternative products",
+          impact: "Protect the user's experience and at the same time drive basket building through targeted cross selling"
+        },
       ],
-      architectureDiagram: `
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ Gen Z Trend Photo (UI)  │────>│ Multimodal LLM Extraction│────>│ Computer Vision Tone   │
-└─────────────────────────┘     └──────────────────────────┘     └───────────┬────────────┘
-                                                                             │
-                                                                             ▼
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ Instant Beauty Cart UI  │<────│ Purchase History Filter  │<────│ Sephora SKU Vector Match│
-└─────────────────────────┘     └──────────────────────────┘     └────────────────────────┘
-`,
+      architectureDiagram: `flowchart TD
+    %% Styling & Definitions
+    classDef bg fill:#f4f4f5,stroke:#71717a,stroke-width:1px,color:#18181b;
+    classDef runtime fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e3a8a;
+    classDef orchestrator fill:#fef3c7,stroke:#f59e0b,stroke-width:1px,color:#78350f;
+    classDef output fill:#ecfdf5,stroke:#10b981,stroke-width:1px,color:#064e3b;
+
+    %% Background Ingestion Pipeline
+    subgraph Background_Layer ["1. Asynchronous Ingestion (Cron Pipeline)"]
+        A1[Social Platforms: TikTok / IG / XHS] -->|Scrape hashtags & viral looks| A2[Trend Scraping Agent]
+        A2 -->|Tag metadata, palette & products| A3[(Trend Knowledge Base)]
+    end
+    class A1,A2,A3 bg;
+
+    %% Real-time User Session Pipeline
+    subgraph Client_Intake ["2. Real-Time Intake & Parallel Context Retrieval"]
+        B1[User Inspiration: Screenshot / Link / Text] --> B2[Processing Agent]
+        B2 -->|Normalized Intent & Aesthetic Tokens| C1[Discussion Room Orchestrator]
+        
+        B3[User Session ID] --> B4[User Profile History Processor]
+        B4 -->|Skin Profile & Owned SKUs| C1
+    end
+    class B1,B2,B3,B4 runtime;
+
+    %% Multi-Agent Orchestration & Catalog Validation
+    subgraph Synthesis_Layer ["3. Orchestration & Inventory Grounding"]
+        A3 -.->|Ground Aesthetic & Trend Palette| C1
+        
+        C1 -->|Layered Routine Steps + Exclusion Rules| D1[Product Matcher]
+        D2[(Internal SKU Catalog & Live Inventory)] <-->|Vector Similarity Search & Stock Check| D1
+    end
+    class C1 orchestrator;
+    class D1,D2 output;
+
+    %% Output & Verification Loop
+    subgraph Delivery_Layer ["4. Delivery & Critic Loop"]
+        D1 --> E1[Critic Agent: Vision Model]
+        B1 -.->|Original Image Reference| E1
+        E1 -->|Fidelity Validation Score 0-100| D1
+        D1 --> E2[Frontend: Curated Bundle with One-Click Add to Cart]
+    end
+    class E1,E2 output;`,
+      mermaidDiagram: `flowchart TD
+    %% Styling & Definitions
+    classDef bg fill:#f4f4f5,stroke:#71717a,stroke-width:1px,color:#18181b;
+    classDef runtime fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e3a8a;
+    classDef orchestrator fill:#fef3c7,stroke:#f59e0b,stroke-width:1px,color:#78350f;
+    classDef output fill:#ecfdf5,stroke:#10b981,stroke-width:1px,color:#064e3b;
+    classDef finalNode fill:#10b981,stroke:#047857,stroke-width:2px,color:#ffffff,font-weight:bold;
+
+    %% Background Ingestion Pipeline
+    subgraph Background_Layer ["1. Asynchronous Ingestion (Cron Pipeline)"]
+        A1[Social Platforms: TikTok / IG / XHS] -->|Scrape hashtags & viral looks| A2[Trend Scraping Agent]
+        A2 -->|Tag metadata, palette & products| A3[(Trend Knowledge Base)]
+    end
+    class A1,A2,A3 bg;
+
+    %% Real-time User Session Pipeline
+    subgraph Client_Intake ["2. Real-Time Intake & Parallel Context Retrieval"]
+        B1[User Inspiration: Screenshot / Link / Text] --> B2[Processing Agent]
+        B2 -->|Normalized Intent & Aesthetic Tokens| C1[Discussion Room Orchestrator]
+        
+        B3[User Session ID] --> B4[User Profile History Processor]
+        B4 -->|Skin Profile & Owned SKUs| C1
+    end
+    class B1,B2,B3,B4 runtime;
+
+    %% Multi-Agent Orchestration & Catalog Validation
+    subgraph Synthesis_Layer ["3. Orchestration & Inventory Grounding"]
+        A3 -.->|Ground Aesthetic & Trend Palette| C1
+        
+        C1 -->|Layered Routine Steps + Exclusion Rules| D1[Product Matcher]
+        D2[(Internal SKU Catalog & Live Inventory)] <-->|Vector Similarity Search & Stock Check| D1
+    end
+    class C1 orchestrator;
+    class D1,D2 output;
+
+    %% Output & Verification Loop
+    subgraph Delivery_Layer ["4. Delivery & Critic Loop"]
+        D1 --> E1[Critic Agent: Vision Model]
+        B1 -.->|Original Image Reference| E1
+        E1 -->|Fidelity Validation Score 0-100| D1
+        
+        %% Direct Final Output Arrow
+        D1 ==>|Final Output: Formatted Bundle JSON| E2[Frontend: Curated Cart Bundle]
+        E2 --> E3([User Checkout: 'Add All to Cart' CTA])
+    end
+    class E1,E2 output;
+    class E3 finalNode;`,
       codeSnippet: `// Product Logic: Recommendation Match & Duplicate SKU Filter
 async function generatePersonalizedCart(userPhoto, userHistorySKUs) {
   const visualAttributes = await extractLLMMetadata(userPhoto);
@@ -104,49 +217,8 @@ async function generatePersonalizedCart(userPhoto, userHistorySKUs) {
     confidenceScore: 0.94
   };
 }`,
-      liveUrl: "https://linkedin.com/in/amos-chan-yi-kang",
+      liveUrl: "https://www.figma.com/design/bIqO8Tx5nBd28bCZlEPuE2/Snap2Cart?node-id=0-1&t=mkktsB3RaSTKxWft-1",
       githubUrl: "https://github.com/Amoussee"
-    },
-    {
-      id: "ga-data-migration",
-      title: "GA Data Migration & Telemetry Pipeline",
-      tagline: "Internal Analytics Infrastructure @ Sephora (In-Store Beauty Advisor Telemetry)",
-      category: "Data Infrastructure & Telemetry",
-      tags: ["Event Tracking", "Schema Design", "User Telemetry", "Scan Analytics", "SQL"],
-      featured: true,
-      metrics: "📊 ~5% Data Loss Reduction | Sephora BA Telemetry",
-      shortDescription: "Migration to internal tracking pipeline redesigning event schemas to map pre-sale interaction sequences and optimize consultation flows.",
-      problem: "Legacy analytics suffered from data loss and unstandardized event schemas, making it difficult for the Education team to analyze Beauty Advisor consultation sequences.",
-      solution: "Led migration to internal tracking pipeline (~5% data loss reduction), redesigning event schemas to map pre-sale interaction sequences and capture detailed scan telemetry.",
-      keyDecisions: [
-        "Redesigned event schemas for pre-sale interaction triggers.",
-        "Engineered internal telemetry pipeline reducing data loss by ~5%.",
-        "Analyzed scan logs to isolate advisor consultation friction points.",
-        "Collaborated with data engineers to establish sprint-ready specifications."
-      ],
-      architectureDiagram: `
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ Beauty Scan Event Trigger│────>│ Internal Telemetry Pipe  │────>│ Redesigned Event Schema│
-└─────────────────────────┘     └──────────────────────────┘     └───────────┬────────────┘
-                                                                             │
-                                                                             ▼
-┌─────────────────────────┐                                    ┌────────────────────────┐
-│ Consultation Analytics  │<───────────────────────────────────│ SQL Telemetry Warehouse│
-└─────────────────────────┘                                    └────────────────────────┘
-`,
-      codeSnippet: `// Event Schema Definition for In-Store Scan Telemetry
-export const scanTelemetryEventSchema = {
-  eventName: "ba_skin_scan_completed",
-  properties: {
-    advisorId: "string",
-    storeLocation: "string",
-    scanDurationMs: "number",
-    skinConditionTags: "array",
-    recommendedSKUsCount: "number"
-  }
-};`,
-      liveUrl: "#",
-      githubUrl: "#"
     },
     {
       id: "ai-beauty-scan",
@@ -157,32 +229,35 @@ export const scanTelemetryEventSchema = {
       featured: true,
       metrics: "✨ €885K Valued Workflow | In-Store Digital Touchpoint",
       shortDescription: "Interactive LLM-powered skincare recommendation workflow prototyped in Figma to resolve advisor choice paralysis and enhance in-store consultations.",
-      problem: "Beauty Advisors faced choice paralysis when navigating thousands of skincare products during quick customer consultations.",
-      solution: "Designed high-fidelity Figma prototypes for an LLM-powered skincare recommendation assistant, streamlining consultation flows and accelerating Phase 1 delivery.",
+      problem: `**• Context**: Context: As part of a digital retail initiative to integrate AI assistance into in-store consultations, the beauty advisor application required a UI/UX redesign. The objective was to eliminate existing interaction bottlenecks and build an intuitive interface capable of supporting AI recommendation features on the retail floor.
+      
+      **• Choice Paralysis in Store:** Beauty Advisors faced severe decision paralysis when navigating hundreds of skincare products during quick 3-minute customer consultations.
+
+      **• User Adoption & Floor Friction  :** Rather than streamlining consultations, the app introduced severe cognitive load and choice paralysis for junior Beauty Advisors, while senior staff bypassed the tool entirely in favor of habit and personal preference.
+
+**• Operational Friction:** Retail staff spent excessive time looking up ingredient incompatibilities and product shade matches, reducing customer interaction quality during peak footfall hours.`,
+      mySolution: "Designed high-fidelity Figma prototypes for an LLM-powered skincare recommendation assistant, streamlining consultation flows and accelerating Phase 1 delivery.",
       keyDecisions: [
-        "Authored interactive Figma prototypes for in-store iPad consultation tool.",
-        "Formulated user journey maps for Beauty Advisor in-store interaction sequence.",
-        "Conducted usability walkthroughs to eliminate UI friction during customer consultations."
+        {
+          strategicDecision: "High-Fidelity Figma Prototyping for Executive Alignment",
+          dilemma: "High urgency from retail leadership required fast validation of the €885K LLM skincare workflow before committing full engineering build capacity.",
+          solution: "Authored interactive high-fidelity Figma prototypes and user journey maps for in-store iPad consultation tools.",
+          impact: "Secured executive buy-in for €885K valued workflow and accelerated Phase 1 delivery."
+        },
+        {
+          strategicDecision: "Advisor Consultation UX Simplification",
+          dilemma: "Beauty Advisors faced severe decision paralysis navigating thousands of SKU combinations under tight 3-minute customer interaction windows.",
+          solution: "Structured LLM recommendations into 3 streamlined routine tabs (Cleanse, Treat, Hydrate) with instant skin type matching.",
+          impact: "Eliminated UI friction and reduced average consultation handling time."
+        },
+        {
+          strategicDecision: "Continuous Usability Feedback Loops",
+          dilemma: "Initial UI concepts felt overly complex for non-technical retail staff.",
+          solution: "Conducted usability walkthroughs and co-facilitated stakeholder workshops, synthesizing retail feedback directly into sprint backlog priorities.",
+          impact: "Achieved high Beauty Advisor adoption and positive qualitative sentiment."
+        }
       ],
-      architectureDiagram: `
-┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
-│ Advisor Consultation UI │────>│ In-Store Skin Scan Engine│────>│ LLM Recommendation API │
-└─────────────────────────┘     └──────────────────────────┘     └───────────┬────────────┘
-                                                                             │
-                                                                             ▼
-┌─────────────────────────┐                                    ┌────────────────────────┐
-│ Personalized Routine UI │<───────────────────────────────────│ Instant Product Match  │
-└─────────────────────────┘                                    └────────────────────────┘
-`,
-      codeSnippet: `// Figma Component Interaction Spec
-export function onScanComplete(scanData) {
-  return {
-    uiState: "RECOMMENDATION_VIEW",
-    activeTab: "SKINCARE_ROUTINE",
-    suggestedProducts: scanData.matchedProducts
-  };
-}`,
-      liveUrl: "#",
+                  liveUrl: "https://www.figma.com/design/fmT1nqYgCLxgFxIqshU3r7/Untitled?node-id=0-1&t=I9fwl88SHzvRhUGV-1",
       githubUrl: "#"
     },
     {
@@ -194,13 +269,48 @@ export function onScanComplete(scanData) {
       featured: true,
       metrics: "🌱 3 Core Modules Delivered | Reduced Admin Overhead",
       shortDescription: "End-to-end web sustainability platform featuring carbon route optimization, peer social proof overlays, and a natural-language-to-chart BI reporting engine.",
-      problem: "Schools and non-profit clients lacked visibility into student commute emissions and suffered operational reporting bottlenecks due to fragmented survey forms.",
-      solution: "Partnered with non-profit stakeholders to scope, architect, and deliver a 3-module platform with an interactive carbon simulator, peer emission map overlays, and an in-house survey engine.",
+      problem: ` **• Context: ** The Circular Classroom (TCC) is a Singapore-based non-profit organization focused on sustainability education for children and parents. The organization aimed to streamline its manual data collection and reporting infrastructure while transforming sustainability data into interactive public awareness tools.
+      **• Operational Bottlenecks:** The Circular Classroom (TCC) served hundreds of schools and thousands of parents but operated on fragmented WhatsApp chats, Google Forms, and manual Excel sheets.
+
+**• Admin Reporting Friction:** Data processing was unscalable; admins manually copied and cleaned survey responses into Excel and generated charts by hand, leading to delayed stakeholder reporting.
+
+**• Parent Behavioral Frictions:** Parents were unaware of the environmental impact of daily school drop-offs and lacked visibility into lower-emission travel alternatives.`,
+      mySolution: `Greener Routes is an integrated, full-stack sustainability and data platform built for The Circular Classroom (TCC) to modernize environmental data collection and cultivate commute-emissions awareness across TCC's school community. 
+
+      **• Survey Toolkit**: allowing administrators to create reusable survey templates, distribute unique tracking links, and capture structured student commute data in real time.
+
+      **• Visualisations Dashboard**: analyzes correlation matrices and recommends optimal chart configurations, enabling non-technical teams to generate actionable, presentation-ready reports on demand.
+
+      **• Carbon Emissions Simulator**: calculates personalized school travel footprints using Singapore Emission Factor Registry (SEFR) benchmarks. We helped convert raw emission figures into relatable everyday analogies, comparings travel habits against agregate community benchmarks, and recommending balanced eco-friendly transit routes
+      
+      `
+      
+
+      ,
+      technicalImplementation: `**• Multi-Objective Route Optimization Engine:** Integrated Google Maps API with custom emission coefficient modeling to compute a balanced Nudge Score balancing travel duration against carbon footprint.
+
+**• Peer Social Proof Map Overlays:** Embedded interactive maps visualizing school commute emission savings to motivate eco-friendly travel choices.
+
+**• Natural Language BI Query Builder:** Architected an in-house NL-to-chart analytics builder paired with an automated survey builder, allowing non-technical admins to query commute data without writing SQL.`,
       keyDecisions: [
-        "Designed interactive carbon simulator leveraging Google Maps API for multi-objective route recommendations (Duration vs. Footprint).",
-        "Embedded interactive peer emission map overlays using social proof nudges to encourage greener commute choices.",
-        "Built natural-language-to-visualization interface allowing non-technical admins to generate custom charts on demand.",
-        "Engineered an in-house survey builder feeding structured commute data directly into analytical pipelines."
+        {
+          strategicDecision: "Multi-Objective Carbon & Duration Route Optimization",
+          dilemma: "Standard navigation APIs only optimized for travel time, ignoring carbon footprint trade-offs for school student commutes.",
+          solution: "Integrated Google Maps API with custom emission coefficient modeling to calculate a balanced Nudge Score (Duration vs. Footprint).",
+          impact: "Delivered interactive carbon simulator empowering students to choose greener commute routes."
+        },
+        {
+          strategicDecision: "Social Proof Nudge Overlay & Peer Maps",
+          dilemma: "Passive sustainability information failed to motivate long-term student behavior changes.",
+          solution: "Embedded interactive peer emission map overlays using social proof nudges to celebrate eco-friendly commute choices.",
+          impact: "Increased student engagement with green commute initiatives."
+        },
+        {
+          strategicDecision: "Natural Language BI Engine for Non-Technical Admins",
+          dilemma: "School admins lacked SQL skills to generate custom carbon reporting charts from raw commute survey data.",
+          solution: "Architected a natural-language-to-visualization interface paired with an in-house survey builder feeding directly into analytical pipelines.",
+          impact: "Delivered 3 core platform modules and drastically reduced administrative reporting overhead."
+        }
       ],
       architectureDiagram: `
 ┌─────────────────────────┐     ┌──────────────────────────┐     ┌────────────────────────┐
